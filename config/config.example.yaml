@@ -1,0 +1,56 @@
+# AI News Digest 配置示例
+# 复制本文件为 config/config.yaml 并填写真实参数。
+
+schedule:
+  # 每天触发时间（HH:MM，本地时区）。供 systemd timer 使用（install.sh 写入 OnCalendar）。
+  time: "08:00"
+
+# RSS 源分组：键为组名，值为该组的 RSS URL 列表
+sources:
+  "Tech News":
+    - "https://techcrunch.com/feed/"
+    - "https://www.theverge.com/rss/index.xml"
+    - "https://analyticsindiamag.com/feed/"
+    - "https://www.wired.com/feed/rss"
+    - "https://thenextweb.com/feed"
+  "Tools subredit":
+    - "https://www.reddit.com/r/SideProject/.rss"
+    - "https://www.reddit.com/r/InternetIsBeautiful/.rss"
+    - "https://dev.to/feed/tag/tools"
+    - "https://www.producthunt.com/feed"
+
+filter:
+  # 只保留最近 N 小时内发布的新闻
+  window_hours: 24
+
+ai_agent:
+  # claude 可执行文件路径（which claude 查看）
+  claude_bin: "/home/liangff/.nvm/versions/node/v24.16.0/bin/claude"
+  # 每组保留的新闻条数
+  top_n: 10
+  # claude 调用超时（秒）
+  timeout: 300
+  # 兴趣关键词，用于让 Agent 筛选最相关的新闻
+  keywords:
+    - "AI agent"
+    - "LLM"
+    - "开发者工具"
+    - "开源项目"
+
+output:
+  # HTML 摘要保存目录
+  dir: "./output"
+
+email:
+  smtp_host: "smtp.example.com"
+  smtp_port: 587
+  use_tls: true                     # 587 用 STARTTLS；465 请设为 false（自动走 SSL）
+  username: "you@example.com"
+  password: "your-app-password"     # 建议使用应用专用密码
+  from_addr: "you@example.com"
+  to_addrs:
+    - "target@example.com"
+  subject: "AI News Digest {date}"  # {date} 会替换为当天日期
+
+log:
+  level: "INFO"                     # DEBUG / INFO / WARNING / ERROR

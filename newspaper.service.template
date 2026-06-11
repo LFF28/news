@@ -1,0 +1,9 @@
+[Unit]
+Description=AI News Digest (run once)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=__APP_DIR__
+ExecStart=__VENV_PY__ __APP_DIR__/run.py

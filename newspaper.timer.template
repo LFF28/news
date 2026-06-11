@@ -1,0 +1,9 @@
+[Unit]
+Description=AI News Digest daily timer
+
+[Timer]
+OnCalendar=*-*-* __RUN_TIME__
+Persistent=true
+
+[Install]
+WantedBy=timers.target
