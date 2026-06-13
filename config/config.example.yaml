@@ -23,22 +23,30 @@ filter:
   # 只保留最近 N 小时内发布的新闻
   window_hours: 24
 
+# 兴趣关键词：rerank 用其作为 query 对每组新闻排序，Agent 据此理解侧重点
+keywords:
+  - "AI agent"
+  - "LLM"
+  - "开发者工具"
+  - "开源项目"
+
+rerank:
+  # 阿里云百炼 DashScope API Key（https://bashan.console.aliyun.com/ 获取）
+  api_key: "sk-xxxxxxxxxxxxxxxxxxxxxxxx"
+  model: "qwen3-rerank"
+  # 每组按相关度保留的新闻条数
+  top_n: 10
+  # rerank 指令（来自 MTEB MindSmallReranking 任务）
+  instruct: "Retrieve relevant news articles based on user browsing history"
+
 ai_agent:
   # claude 可执行文件路径（which claude 查看）
   claude_bin: "/home/liangff/.nvm/versions/node/v24.16.0/bin/claude"
-  # 每组保留的新闻条数
-  top_n: 10
   # claude 调用超时（秒）
   timeout: 300
-  # 兴趣关键词，用于让 Agent 筛选最相关的新闻
-  keywords:
-    - "AI agent"
-    - "LLM"
-    - "开发者工具"
-    - "开源项目"
 
 output:
-  # HTML 摘要保存目录
+  # HTML 摘要与中间 JSON 的保存目录
   dir: "./output"
 
 email:

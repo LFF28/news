@@ -4,11 +4,12 @@ from .logger import setup_logger
 from .pipeline import Pipeline
 from .units.rss_reader import RSSReader
 from .units.filter import Filter
+from .units.reranker import Reranker
 from .units.ai_agent import AIAgent
 from .units.email_sender import EmailSender
 
 # 单元加载顺序（头 -> 尾）
-UNIT_CLASSES = [RSSReader, Filter, AIAgent, EmailSender]
+UNIT_CLASSES = [RSSReader, Filter, Reranker, AIAgent, EmailSender]
 
 
 def run(verbose: bool = False, config_path: str | None = None) -> int:
