@@ -49,6 +49,10 @@ ai_agent:
   # 可选：指定 Codex 模型或 profile；留空则使用 Codex 默认配置
   codex_model: ""
   codex_profile: ""
+  # Codex 后端启用网页检索，用于补全 RSS 摘要过短的新闻
+  enable_web_search: true
+  # HTML 模版文件路径
+  template_path: "config/news_template.html"
   # 保存 Agent stdout/stderr 到 output/，方便调试
   save_run_output: true
   # Agent 调用超时（秒）

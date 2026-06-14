@@ -27,7 +27,7 @@ class Reranker(Unit):
         return "、".join(self.keywords) if self.keywords else "AI 新闻"
 
     def _rerank_group(self, items: list) -> list:
-        """对单组新闻按关键词相关度排序，返回 top_n 条（保留原字段）。"""
+        """对单组新闻按关键词相关度排序，返回 top_n 条（不输出相关度分数）。"""
         if not items:
             return []
         # 用 title + contentSnippet 拼成待排序文本
@@ -52,7 +52,7 @@ class Reranker(Unit):
         for r in resp.output["results"]:
             idx = r["index"]
             item = dict(items[idx])
-            item["relevance_score"] = r.get("relevance_score")
+            item.pop("relevance_score", None)
             ranked.append(item)
         return ranked
 

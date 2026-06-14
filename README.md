@@ -15,7 +15,7 @@ systemd timer (每天 08:00)
 - **RSSReader**（头单元）：按分组抓取所有 RSS 源，归一化输出分组 JSON。
 - **Filter**：只保留最近 N 小时内的新闻，且每条仅留 `title` 与 `contentSnippet`。
 - **Reranker**：用 qwen3-rerank（DashScope）以兴趣关键词为 query 对每组排序，取相关度最高的 top_n 条，结果保存为 `output/ranked_YYYY-MM-DD.json`。
-- **AIAgent**：根据 `ai_agent.backend` 调用 Claude 或 Codex CLI，让 Agent **读取上一步的 JSON 文件**（避免命令行参数过长）并整理成 HTML 存到本地。
+- **AIAgent**：根据 `ai_agent.backend` 调用 Claude 或 Codex CLI，让 Agent **读取上一步的 JSON 文件**（避免命令行参数过长），对过短新闻检索补充、对过长新闻压缩成统一简报，并整理成 HTML 存到本地。
 - **EmailSender**（尾单元）：将 HTML 通过 SMTP 发送到配置的收件箱。
 
 每个单元为独立的类，配置参数全部来自 `config/config.yaml`。除头尾单元外都实现 `output()` 方法，配合 `-v` 可查看中间结果。
@@ -63,6 +63,8 @@ cp config/config.example.yaml config/config.yaml
 | `ai_agent.codex_bin` | codex 可执行文件绝对路径或命令名。 |
 | `ai_agent.codex_model` | 可选，指定 Codex 模型；留空使用 Codex 默认配置。 |
 | `ai_agent.codex_profile` | 可选，指定 Codex profile；留空使用 Codex 默认配置。 |
+| `ai_agent.enable_web_search` | Codex 后端是否启用网页检索，用于补全 RSS 摘要过短的新闻，默认 `true`。 |
+| `ai_agent.template_path` | HTML 模版文件路径，默认 `config/news_template.html`。 |
 | `ai_agent.save_run_output` | 是否保存 Agent stdout/stderr 到 `output/`，默认 `true`。 |
 | `ai_agent.timeout` | Agent 调用超时秒数。 |
 | `output.dir` | 生成的 HTML 与中间 JSON 的保存目录。 |
@@ -99,6 +101,8 @@ journalctl --user -u newspaper.service -f       # 实时日志
 - `output/ranked_YYYY-MM-DD.json`：rerank 排序后的分组新闻（AIAgent 的输入）。
 - `output/digest_YYYY-MM-DD.html`：最终 HTML 摘要，同时作为邮件正文发送。
 - `output/{backend}_YYYY-MM-DD_HHMMSS.stdout.txt` / `output/{backend}_YYYY-MM-DD_HHMMSS.stderr.txt`：Agent 子进程输出，便于调试。
+
+HTML 样式模版默认保存在 `config/news_template.html`，可直接修改配色、字号和布局。
 
 ## 故障排查
 
