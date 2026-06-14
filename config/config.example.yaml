@@ -40,9 +40,18 @@ rerank:
   instruct: "Retrieve relevant news articles based on user browsing history"
 
 ai_agent:
+  # AI Agent 后端：claude 或 codex
+  backend: "claude"
   # claude 可执行文件路径（which claude 查看）
   claude_bin: "/home/liangff/.nvm/versions/node/v24.16.0/bin/claude"
-  # claude 调用超时（秒）
+  # codex 可执行文件路径（which codex 查看）
+  codex_bin: "codex"
+  # 可选：指定 Codex 模型或 profile；留空则使用 Codex 默认配置
+  codex_model: ""
+  codex_profile: ""
+  # 保存 Agent stdout/stderr 到 output/，方便调试
+  save_run_output: true
+  # Agent 调用超时（秒）
   timeout: 300
 
 output:
